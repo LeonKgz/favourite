@@ -1,4 +1,5 @@
 def countTriplets(arr, r):
+
   seconds = {}
   thirds = {}
   counts = {}
@@ -20,6 +21,15 @@ def countTriplets(arr, r):
       thirds[a] += 1
 
   ret = 0
+
+  if (r == 1):
+  
+    for val, cnt in counts.items():
+      n = cnt
+      top = n * (n-1) * (n-2)
+      bottom = 6
+      ret += int(top / 6)
+    return ret
   #print(counts)
   #print(seconds)
   #print(thirds)
@@ -33,4 +43,5 @@ def countTriplets(arr, r):
 
 print(countTriplets([1, 4, 16, 64], 4))
 print(countTriplets([1, 3, 9, 9, 27, 81], 3))
-print(countTriplets([1, 5, 5, 25, 125], 5))
+print(countTriplets([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 1))
+
