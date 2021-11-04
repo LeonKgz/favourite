@@ -1,47 +1,41 @@
-def countTriplets(arr, r):
-
-  seconds = {}
-  thirds = {}
+def countTriplets(array, r):
+  count = 0
   counts = {}
-  for a in arr:
-    if (a in counts):
-      counts[a] += 1
-    else:
-      counts[a] = 1
-    ar = a * r
-    arr = a * r * r
-    if (ar not in seconds):
-      seconds[ar] = 0
-    if (arr not in thirds):
-      thirds[arr] = 0
-    if (a in seconds):
-      seconds[a] += 1
-      
-    if (a in thirds):
-      thirds[a] += 1
-
-  ret = 0
-
-  if (r == 1):
   
-    for val, cnt in counts.items():
-      n = cnt
-      top = n * (n-1) * (n-2)
-      bottom = 6
-      ret += int(top / 6)
-    return ret
-  #print(counts)
-  #print(seconds)
-  #print(thirds)
-  for val, counter in thirds.items():
-    if (counter != 0):
-      ar = int(val / r)
-      a = int(ar / r)
+  # dict pairs links array elements [a] to the [ar] elements that have a higher index
+  # it stores the number of how many highers ars it is linked to 
+  dictPairs = {}
+  for a in reversed(array):
 
-      ret += (counter * seconds[ar] * counts[a])
-  return ret
+        # if we see that there is an 'ar' in dictPairs for encountered 'a', it means 
+        # this 'ar' is linked to some 'arr' already through the dictPairs so we know  
+        # there is a triplet (or triplets). Update the count by the value in dictPairs
+        # which is the total number 'ar' has been linked up with respective 'arr's
+          if a*r in dictPairs:
+                  count += dictPairs[a*r]
 
-print(countTriplets([1, 4, 16, 64], 4))
+         # we are going backwards. If we already encountered an 'ar' before (higher in inital index)
+         # save it in dictPairs with 'a' as a key and number of times we saw 'ar' before
+         # if encounter 'a' again in the future again add the number of 'ar's encountered before
+         # because we are traversing the aray in this order it is correct. 
+         # It is similar in effect to multiplication but here we are inceremntally adding counters
+
+          if a*r in counts:
+                  dictPairs[a] = dictPairs.get(a, 0) + counts[a*r]
+          counts[a] = counts.get(a, 0) + 1
+
+  return count
+
+
+#print(countTriplets([1, 10, 10, 100, 1000, 1000], 10))
+
 print(countTriplets([1, 3, 9, 9, 27, 81], 3))
-print(countTriplets([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 1))
 
+#print(countTriplets([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 1))
+#def read_input(name):
+#  with open(name, 'r') as f:
+#    content = [int(i) for i in f.readlines()[1].split(" ")]
+#    print(countTriplets(content, 10))
+#
+#read_input("input10.txt")
+#read_input("input06.txt")
