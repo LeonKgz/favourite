@@ -1,76 +1,59 @@
-def insert_sort(deque, element):
-    curr = len(deque)
-    
-    if (curr == 0):
-        deque.append(element)
-        return 0
-    
-    if (curr == 1):
-        if (element > deque[0]):
-            deque.append(element)
-            return 1
-        else:
-            deque.insert(0, element)
-            return 0
-    
-    curr = len(deque)
-        
-    while (element < deque[curr-1]):
-        curr -= 1
-        if (curr == -1):
-            deque.insert(0, element)
-    
-    deque.insert(curr, element)
-    return curr    
-            
 def activityNotifications(expenditure, d):
     # Write your code here
     
     # deque is always sorted and stores the last d elements from expenditure
-    deque = []
     res = 0
     cnt = 0
     
     encountered = []
-    history = {}
     
+    counts = []
+    
+    for i in range(201):
+      counts.append(0)
+
     for e in expenditure:
-        cnt += 1
-        if (cnt % 1000 == 0):
-          print(cnt)
+        
+        if (cnt >= d):
+          median = getMedian(counts, d)
+          if (e >= median * 2):
+              res += 1
+          first = encountered[-d]
+          counts[first] -= 1
+        counts[e] += 1
+
+        cnt += 1    
         encountered.append(e)
-        # print(f"{e} is incoming")
-        # print("-------")
-        if (len(deque) == d):
-            # now need to sort deque and calculate median
-            
-            # if insert sort into deque, then we need to know what element was added d times before and 
-            # remove it (don't care about repeated values)
-            
-            idx = int(d / 2) if d % 2 == 1 else int(d/2) + 1
-            
-            if (d % 2 == 0):
-                median = (deque[int(d / 2)] + deque[int(d / 2) - 1]) / 2
-            else:
-                median = deque[int(d / 2)]
-                
-            if (e >= median * 2):
-                res += 1
-            
-            deque.remove(encountered[-d - 1])
-            # print(history)
-            # print(encountered[-d])
-            # print(history[encountered[-d]])
-            # print(f"now deleting {encountered[-d-1]}")
-            # del deque[history[encountered[-d-1]]]
-            idx = insert_sort(deque, e)
-            history[e] = idx
-            
-        else:
-            idx = insert_sort(deque, e)
-            history[e] = idx
-            continue
+
     return res
+
+def getMedian(arr, d):
+  
+  if (d % 2 == 0):
+    
+    m1 = None
+    m2 = None
+
+    count = 0
+    for i in range(len(arr)):
+      count += arr[i]
+      if (m1 == None and count >= d/2):
+        m1 = i
+      if (m2 == None and count >= d/2 + 1):
+        m2 = i
+        break
+
+    return (m1 + m2) / 2.0
+
+  else:
+    count = 0
+    for i in range(len(arr)):
+      count += arr[i]
+      if (count >= d/2):
+        return i
+
+#print(activityNotifications([1 ,2 ,3 ,4 ,4], 4))
+#exit(0)
 
 
 def read_input(name):
